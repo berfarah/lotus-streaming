@@ -1,3 +1,15 @@
+module Lotus
+  class RenderingPolicy
+    def render(env, response)
+      body = _render(env, response)
+      response[BODY] = Array(body) unless body.nil? || body.respond_to?(:each)
+      response
+    end
+  end
+end
+
+class Rack::Chunked::Body; def empty?; end end
+
 module Web::Controllers::Home
   class Index
     include Web::Action
@@ -5,11 +17,11 @@ module Web::Controllers::Home
     def call(params)
       self.format = :text
       self.body = Enumerator.new do |y|
-        yield "one"
+        y << "one"
         sleep 1
-        yield "two"
+        y << "two"
         sleep 1
-        yield "three"
+        y << "three"
       end
     end
   end
