@@ -8,7 +8,7 @@ module Lotus
   end
 end
 
-class Rack::Chunked::Body; def empty?; end end
+class Enumerator; def empty?; end end
 
 module Web::Controllers::Home
   class Index
